@@ -278,29 +278,39 @@
         </dd>
           <dt width="150" align="left"><i18n:text i18n:key="issuer"/></dt>
         <dd>
-          <xsl:variable name="forename" select="//t:persName[@xml:lang='en']/t:forename"/>
-          <xsl:variable name="surname" select="//t:persName[@xml:lang='en']/t:surname"/>
-          <xsl:variable name="corporate" select="//t:orgName[@xml:lang='en']"/>
-          <xsl:choose>
-            <xsl:when test="//t:persName[@xml:lang='en'][ancestor::t:person]">
-              <xsl:apply-templates select="//t:persName[@xml:lang='en'][ancestor::t:person]"/>
-            </xsl:when>
-            <xsl:when test="$surname">
-              <xsl:value-of select="concat($forename, ' ', $surname)"/>
-            </xsl:when>
-            <xsl:when test="$forename">
-              <xsl:value-of select="$forename"/>
-            </xsl:when>
-            <xsl:when test="$corporate">
-              <xsl:value-of select="$corporate"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:text>―</xsl:text>
-            </xsl:otherwise>
-          </xsl:choose>
+          
+          <xsl:for-each select="//t:listPerson[@type='issuer']//t:person">
+            <xsl:variable name="forename" select="./t:persName[@xml:lang='en']/t:forename"/>
+            <xsl:variable name="surname" select="./t:persName/t:persName[@xml:lang='en']/t:surname"/>
+            <xsl:variable name="idnos">
+              <xsl:for-each select="./t:idno">
+                  <xsl:value-of select="./@type"/>: <a href="{./@ana}"><xsl:value-of select="."/>
+                  </a><xsl:if test="not(position() = last())">; </xsl:if>
+              </xsl:for-each>
+            </xsl:variable>
+            <xsl:value-of select="concat($forename, $surname)"/>
+            (<xsl:copy-of select="$idnos"/>)
+            <br/>
+            <b >milieu: </b>
+            <xsl:variable name="tokenizedmillieu">
+              <xsl:for-each select="tokenize(./@role, ' ')">
+                <token><xsl:value-of select="."/></token>
+              </xsl:for-each>
+            </xsl:variable>
+            <xsl:for-each select="$tokenizedmillieu//token">
+              <i18n:text i18n:key="{.}"/><xsl:if test="not(fn:position() =last())">; </xsl:if>
+            </xsl:for-each>
+            <br/><b>gender: </b><i18n:text i18n:key='{./@gender}'/><br/>
+         </xsl:for-each>
+
         </dd>
+          <!--
           <dt width="150" align="left"><i18n:text i18n:key="issuer-milieu"/></dt>
-          <dd><xsl:choose>
+          <dd>
+            <xsl:for-each select=".//t:person">
+              
+            </xsl:for-each>
+            <xsl:choose>
             <xsl:when test="//t:person/@role[ancestor::t:listPerson]">
               <xsl:for-each select="tokenize(translate(//t:person/@role, ' ', ','), ',')">
                 <xsl:variable name="currentToken">
@@ -353,6 +363,7 @@
               </xsl:for-each>
             </xsl:when>
           </xsl:choose></dd>
+          -->
           <dt width="150" align="left"><i18n:text i18n:key="place-origin"/></dt>
         <dd>
           <xsl:choose>
@@ -524,6 +535,9 @@
             <xsl:for-each select="//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='obv']">
               <xsl:if test="@xml:lang">
                 <xsl:variable name="lang" select="@xml:lang"/>
+                <i18n:text i18n:key="{$lang}"/>
+                
+                <!--
                 <xsl:choose>
                   <xsl:when test="$lang = 'grc'">
                     <i18n:text i18n:key="grc"/>
@@ -571,6 +585,7 @@
                     <i18n:text i18n:key="undetermined"/>
                   </xsl:otherwise>
                 </xsl:choose>
+                -->
               </xsl:if>
             </xsl:for-each>
           </dd>
@@ -702,8 +717,11 @@
         <dt width="150" align="left"><i18n:text i18n:key="languages"/></dt>
         <dd>
           <xsl:for-each select="//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='rev']">
+            
             <xsl:if test="@xml:lang">
               <xsl:variable name="lang" select="@xml:lang"/>
+              <i18n:text i18n:key="{$lang}"/>
+              <!--
               <xsl:choose>
                 <xsl:when test="$lang = 'grc'">
                   <i18n:text i18n:key="grc"/>
@@ -751,6 +769,7 @@
                   <i18n:text i18n:key="undetermined"/>
                 </xsl:otherwise>
               </xsl:choose>
+              -->
             </xsl:if>
           </xsl:for-each>
         </dd>
