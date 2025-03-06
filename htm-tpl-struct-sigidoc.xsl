@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<xsl:stylesheet xmlns:i18n="http://apache.org/cocoon/i18n/2.1"
+<?xml version="1.0" encoding="UTF-8"?><!-- $Id$ --><xsl:stylesheet xmlns:i18n="http://apache.org/cocoon/i18n/2.1"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="t" version="2.0"
                 xmlns:fn="http://www.w3.org/2005/xpath-functions">
@@ -21,6 +19,7 @@
           </xsl:when>
           <xsl:otherwise>―</xsl:otherwise>
         </xsl:choose>
+        <xsl:if test="//t:publicationStmt//t:idno[@type='SigiDocID']/@cert='low'">?</xsl:if>
       </h6>
     
     
@@ -35,11 +34,12 @@
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
+          <xsl:if test="//t:objectType//t:term//t:seg/@cert='low'">?</xsl:if>
         </dd>
         <!--MF deleted General Layout-->
         <dt width="150" align="left"><i18n:text i18n:key="matrix"/></dt>
         <dd>
-          <xsl:choose xml:space="preserve">
+          <xsl:choose xml:space="preserve">      
             <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='surviving']"> 
               <xsl:choose>
                 <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='surviving']//t:idno[@type='SigiDoc'] and //t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='surviving']//t:idno[@type='PBW']">
@@ -53,16 +53,16 @@
                 </xsl:when>
               </xsl:choose>
             </xsl:when>
-            <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']">
+            <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']">
               <xsl:choose>
-                <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc'] and //t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']">
-                  SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']"/> - PBW ID: <xsl:apply-templates select="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']"/>
+                <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc'] and //t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']">
+                  SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']"/> - PBW ID: <xsl:apply-templates select="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']"/>
                 </xsl:when>
-                <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']">
-                  SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']"/>
+                <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']">
+                  SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']"/>
                 </xsl:when>
-                <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']">
-                  PBW ID: <xsl:apply-templates select="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']"/>
+                <xsl:when test="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']">
+                  PBW ID: <xsl:apply-templates select="//t:layout[@n='whole']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']"/>
                 </xsl:when>
               </xsl:choose>
             </xsl:when>
@@ -83,6 +83,7 @@
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
+          <xsl:if test="//t:objectType//t:interp[@type='workType']/@cert='low'">?</xsl:if>
         </dd>
             <dt width="150" align="left"><i18n:text i18n:key="material"/></dt>
         <dd>
@@ -92,6 +93,7 @@
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
+          <xsl:if test="//t:support//t:material//t:seg/@cert='low'">?</xsl:if>
         </dd>
             <dt width="150" align="left"><i18n:text i18n:key="shape"/></dt>
             <dd>
@@ -101,6 +103,7 @@
                 </xsl:when>
                 <xsl:otherwise>―</xsl:otherwise>
               </xsl:choose>
+              <xsl:if test="//t:layout//t:rs[@type='shape']//t:seg/@cert='low'">?</xsl:if>
             </dd>
             <dt width="150" align="left"><i18n:text i18n:key="dimensions"/></dt>
         <dd>
@@ -108,44 +111,58 @@
             <xsl:when test="//t:support/t:dimensions/t:dim[@type='diameter']/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="diameter"/>
               <xsl:apply-templates select="//t:support/t:dimensions/t:dim[@type='diameter']"/>
+              <xsl:if test="//t:support/t:dimensions/t:dim[@type='diameter']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:when test="//t:support/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:support/t:dimensions/t:width/text()[not(normalize-space(.)=' ')] and //t:support/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="height"/>
-              <xsl:apply-templates select="//t:support/t:dimensions/t:height"/>,
+              <xsl:apply-templates select="//t:support/t:dimensions/t:height"/>
+              <xsl:if test="//t:support/t:dimensions/t:height/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="width"/>
-              <xsl:apply-templates select="//t:support/t:dimensions/t:width"/>,
+              <xsl:apply-templates select="//t:support/t:dimensions/t:width"/>
+              <xsl:if test="//t:support/t:dimensions/t:width/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="thickness"/>
               <xsl:apply-templates select="//t:support/t:dimensions/t:depth"/>
+              <xsl:if test="//t:support/t:dimensions/t:depth/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:when test="//t:support/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:support/t:dimensions/t:width/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="height"/>
-              <xsl:apply-templates select="//t:support/t:dimensions/t:height"/>,
+              <xsl:apply-templates select="//t:support/t:dimensions/t:height"/>
+              <xsl:if test="//t:support/t:dimensions/t:height/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="width"/>
               <xsl:apply-templates select="//t:support/t:dimensions/t:width"/>
+              <xsl:if test="//t:support/t:dimensions/t:width/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:when test="//t:support/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:support/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="height"/>
-              <xsl:apply-templates select="//t:support/t:dimensions/t:height"/>,
+              <xsl:apply-templates select="//t:support/t:dimensions/t:height"/>
+              
+              <xsl:if test="//t:support/t:dimensions/t:height/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="thickness"/>
               <xsl:apply-templates select="//t:support/t:dimensions/t:depth"/>
+              <xsl:if test="//t:support/t:dimensions/t:depth/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:when test="//t:support/t:dimensions/t:width/text()[not(normalize-space(.)=' ')] and //t:support/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="width"/>
-              <xsl:apply-templates select="//t:support/t:dimensions/t:width"/>,
+              <xsl:apply-templates select="//t:support/t:dimensions/t:width"/>
+              <xsl:if test="//t:support/t:dimensions/t:width/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="thickness"/>
               <xsl:apply-templates select="//t:support/t:dimensions/t:depth"/>
+              <xsl:if test="//t:support/t:dimensions/t:depth/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:when test="//t:support/t:dimensions/t:height/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="height">/</i18n:text>
               <xsl:apply-templates select="//t:support/t:dimensions/t:height"/>
+              <xsl:if test="//t:support/t:dimensions/t:height/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:when test="//t:support/t:dimensions/t:width/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="width"/>
               <xsl:apply-templates select="//t:support/t:dimensions/t:width"/>
+              <xsl:if test="//t:support/t:dimensions/t:width/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:when test="//t:support/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="thickness"/>
               <xsl:apply-templates select="//t:support/t:dimensions/t:depth"/>
+              <xsl:if test="//t:support/t:dimensions/t:depth/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -155,15 +172,18 @@
           <xsl:choose>
             <xsl:when test="//t:support//t:measure[@type='weight'][@unit='g']//text()">
               <xsl:apply-templates select="//t:support//t:measure[@type='weight'][@unit='g']"/>
+              <xsl:if test="//t:support//t:measure[@type='weight'][@unit='g']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
+          
         </dd>
             <dt width="150" align="left"><i18n:text i18n:key="channel-orientation"/></dt>
             <dd>
               <xsl:choose>
                 <xsl:when test="//t:support//t:measure[@type='channelOrient'][@unit='clock']//text()">
                   <xsl:apply-templates select="//t:support//t:measure[@type='channelOrient'][@unit='clock']"/>
+                  <xsl:if test="//t:support//t:measure[@type='channelOrient'][@unit='clock']/@cert='low'">?</xsl:if>
                 </xsl:when>
                 <xsl:otherwise>―</xsl:otherwise>
               </xsl:choose>
@@ -173,6 +193,7 @@
           <xsl:choose>
             <xsl:when test="//t:support//t:measure[@type='axis'][@unit='clock']//text()">
               <xsl:apply-templates select="//t:support//t:measure[@type='axis'][@unit='clock']"/>
+              <xsl:if test="//t:support//t:measure[@type='axis'][@unit='clock']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -182,6 +203,7 @@
           <xsl:choose>
             <xsl:when test="//t:support//t:measure[@type='overstrikeOrient'][@unit='clock']//text()">
               <xsl:apply-templates select="//t:support//t:measure[@type='overstrikeOrient'][@unit='clock']"/>
+              <xsl:if test="//t:support//t:measure[@type='overstrikeOrient'][@unit='clock']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -191,6 +213,7 @@
           <xsl:choose>
             <xsl:when test="//t:layout//t:rs[@type='execution']//t:seg//text()">
               <xsl:apply-templates select="//t:layout//t:rs[@type='execution']//t:seg"/>
+              <xsl:if test="//t:layout//t:rs[@type='execution']//t:seg/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -200,6 +223,7 @@
               <xsl:choose>
                 <xsl:when test="//t:support//t:measure[@type='countermark']//text()">
                   <xsl:apply-templates select="//t:support//t:measure[@type='countermark']"/>
+                  <xsl:if test="//t:support//t:measure[@type='countermark']/@cert='low'">?</xsl:if>
                 </xsl:when>
                 <xsl:otherwise>―</xsl:otherwise>
               </xsl:choose>
@@ -209,6 +233,7 @@
           <xsl:choose xml:space="preserve">
             <xsl:when test="//t:supportDesc//t:condition/t:p/text()">
               <xsl:apply-templates select="//t:supportDesc//t:condition//t:p//text()"/>
+                  <xsl:if test="//t:supportDesc//t:condition//t:p/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -223,6 +248,7 @@
           <xsl:choose>
             <xsl:when test="//t:origin//t:origDate[@type='analysis']//t:seg/text()">
               <xsl:apply-templates select="//t:origin//t:origDate[@type='analysis']//t:seg"/>
+              <xsl:if test="//t:origin//t:origDate[@type='analysis']//t:seg/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -232,6 +258,7 @@
             <xsl:choose>
               <xsl:when test="//t:origin//t:origDate[@type='internal']//t:seg/text()">
                 <xsl:apply-templates select="//t:origin//t:origDate[@type='internal']//t:seg"/>
+                <xsl:if test="//t:origin//t:origDate[@type='internal']//t:seg/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
@@ -243,9 +270,11 @@
             <xsl:when test="//t:origin/t:origDate/@evidence">
               <xsl:for-each select="tokenize(//t:origin/t:origDate/@evidence,' ')">
                 <xsl:value-of select="translate(.,'-',' ')"/>
+                
                 <xsl:if test="position()!=last()">
                   <xsl:text>, </xsl:text>
                 </xsl:if>
+                
               </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
@@ -258,6 +287,7 @@
             <xsl:choose>
               <xsl:when test="//t:origin//t:date//t:choice">
                 <xsl:apply-templates select="//t:origin//t:date//t:choice//t:corr"/> (<xsl:apply-templates select="//t:origin//t:date//t:choice//t:corr/@resp"/>), <i18n:text i18n:key="alternative-dating-basedon"/>: <xsl:apply-templates select="//t:origin//t:date//t:interp[@type='datingCriteria']"/>)
+                <xsl:if test="//t:origin//t:date//t:choice//t:corr/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
@@ -272,6 +302,7 @@
           <xsl:choose>
             <xsl:when test="//t:msContents//t:summary[@n='whole']//t:seg//text()">
               <xsl:apply-templates select="//t:msContents//t:summary[@n='whole']//t:seg"/>
+              <xsl:if test="//t:msContents//t:summary[@n='whole']//t:seg/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -280,27 +311,36 @@
         <dd>
           
           <xsl:for-each select="//t:listPerson[@type='issuer']//t:person">
-            <xsl:variable name="forename" select="./t:persName[@xml:lang='en']/t:forename"/>
-            <xsl:variable name="surname" select="./t:persName/t:persName[@xml:lang='en']/t:surname"/>
+            <xsl:variable name="forename">
+              <xsl:value-of select="./t:persName/t:forename"/>
+              <xsl:if test="./t:persName/t:forename/@cert='low'">?</xsl:if>
+           </xsl:variable>
+            <xsl:variable name="surname">           
+              <xsl:value-of select="./t:persName/t:surname"/>
+            <xsl:if test="./t:persName/t:surname/@cert='low'">?</xsl:if>
+            </xsl:variable>
             <xsl:variable name="idnos">
               <xsl:for-each select="./t:idno">
                   <xsl:value-of select="./@type"/>: <a href="{./@ana}"><xsl:value-of select="."/>
                   </a><xsl:if test="not(position() = last())">; </xsl:if>
               </xsl:for-each>
             </xsl:variable>
-            <xsl:value-of select="concat($forename, $surname)"/>
+            <xsl:value-of select="concat($forename,' ' ,$surname)"/>
             (<xsl:copy-of select="$idnos"/>)
             <br/>
-            <b >milieu: </b>
+            <b>milieu: </b>
             <xsl:variable name="tokenizedmillieu">
               <xsl:for-each select="tokenize(./@role, ' ')">
-                <token><xsl:value-of select="."/></token>
+                <token>
+                  <xsl:value-of select="."/>
+                
+                </token>
               </xsl:for-each>
             </xsl:variable>
             <xsl:for-each select="$tokenizedmillieu//token">
               <i18n:text i18n:key="{.}"/><xsl:if test="not(fn:position() =last())">; </xsl:if>
             </xsl:for-each>
-            <br/><b>gender: </b><i18n:text i18n:key='{./@gender}'/><br/>
+            <br/><b>gender: </b><i18n:text i18n:key="{./@gender}"/><br/>
          </xsl:for-each>
 
         </dd>
@@ -369,6 +409,7 @@
           <xsl:choose>
             <xsl:when test="//t:origPlace//t:seg//t:placeName//text()">
               <xsl:apply-templates select="//t:origPlace//t:seg//t:placeName"/>
+              <xsl:if test=".//t:origPlace//t:seg//t:placeName/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -377,13 +418,17 @@
         <dd>
           <xsl:choose xml:space="preserve">
             <xsl:when test="//t:history//t:provenance[@type='found']//t:placeName[@type='ancientFindspot']//text() and //t:history//t:provenance[@type='found']//t:placeName[@type='modernFindspot']//text()">
-              <xsl:apply-templates select="//t:history//t:provenance[@type='found']//t:placeName[@type='ancientFindspot']"/> (<xsl:apply-templates select="//t:history//t:provenance[@type='found']//t:placeName[@type='modernFindspot']"/>)
+              <xsl:apply-templates select="//t:history//t:provenance[@type='found']//t:placeName[@type='ancientFindspot']"/>
+              <xsl:if test="//t:history//t:provenance[@type='found']//t:placeName[@type='ancientFindspot']/@cert='low'">?</xsl:if>
+              (<xsl:apply-templates select="//t:history//t:provenance[@type='found']//t:placeName[@type='modernFindspot']"/>)
             </xsl:when>
             <xsl:when test="//t:history//t:provenance[@type='found']//t:placeName[@type='ancientFindspot']//text()">
               <xsl:apply-templates select="//t:history//t:provenance[@type='found']//t:placeName[@type='ancientFindspot']"/>
+              <xsl:if test="//t:history//t:provenance[@type='found']//t:placeName[@type='ancientFindspot']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:when test="//t:history//t:provenance[@type='found']//t:placeName[@type='modernFindspot']//text()">
               <xsl:apply-templates select="//t:history//t:provenance[@type='found']//t:placeName[@type='modernFindspot']"/>
+              <xsl:if test="//t:history//t:provenance[@type='found']//t:placeName[@type='modernFindspot']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -405,12 +450,14 @@
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
+            <xsl:if test="//t:provenance[@type='found']/@cert='low'">?</xsl:if>
           </dd>
           <dt width="150" align="left"><i18n:text i18n:key="find-circumstances"/></dt>
           <dd>
           <xsl:choose>
             <xsl:when test="//t:provenance[@type='found']//t:rs[@type='circumstances']//text()">
               <xsl:apply-templates select="//t:provenance[@type='found']//t:rs[@type='circumstances']"/>
+              <xsl:if test="//t:provenance[@type='found']//t:rs[@type='circumstances']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -420,14 +467,17 @@
           <xsl:choose xml:space="preserve">
                         <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier//t:settlement//t:seg//text() and //t:sourceDesc//t:msDesc//t:msIdentifier//t:country//t:seg//text()">
                           <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier//t:settlement//t:seg"/>
-                          (<xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier//t:country//t:seg"/>) 
+                          <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier//t:settlement//t:seg/@cert='low'">?</xsl:if>
+                          (<xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier//t:country//t:seg"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier//t:country//t:seg/@cert='low'">?</xsl:if>) 
                         </xsl:when>
                         <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier//t:settlement//t:seg//text()">
                           <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier//t:settlement//t:seg"/>
+                          <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier//t:settlement//t:seg/@cert='low'">?</xsl:if>
                           <xsl:text></xsl:text>
                         </xsl:when>
                         <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier//t:country//t:seg//text()">
                           <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier//t:country//t:seg"/>
+                          <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier//t:country//t:seg/@cert='low'">?</xsl:if>
                           <xsl:text></xsl:text>
                         </xsl:when>
                         <xsl:otherwise>―</xsl:otherwise>
@@ -445,15 +495,17 @@
           <dd>
             <xsl:choose xml:space="preserve">
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:institution//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:repository//text()">
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:institution"/>,
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:repository"/>
+                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:institution"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:institution/@cert='low'">?</xsl:if>,
+                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:repository"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:repository/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:institution//text()">
               <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:institution"/>
+                <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:institution/@cert='low'">?</xsl:if>
               <xsl:text></xsl:text>
             </xsl:when>
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:repository/text()">
               <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:repository"/>
+                <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:repository/@cert='low'">?</xsl:if>
               <xsl:text></xsl:text>
             </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
@@ -464,28 +516,33 @@
             <xsl:choose xml:space="preserve">
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text()">
                 <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/>
+                <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
+                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text()">
               <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
+                <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
               <xsl:text>no inv. no.</xsl:text>
             </xsl:when>
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text()">
               <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/>
+                
+                <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
               <xsl:text></xsl:text>
             </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
             <xsl:choose xml:space="preserve">
               <xsl:when test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/text() and //t:sourceDesc//t:msDesc//t:altIdentifier//t:idno//text()">
-                 (<i>olim </i><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository"/>  
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno"/>)
+                 (<i>olim </i><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository"/> <xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/@cert='low'">?</xsl:if> 
+                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno/@cert='low'">?</xsl:if>)
               </xsl:when>
               <xsl:when test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/text()">
-               (<i>olim </i><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository"/>)
+               (<i>olim </i><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/@cert='low'">?</xsl:if>)
             </xsl:when>
               <xsl:when test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno//text()">
-              <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno"/>
+              <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno/@cert='low'">?</xsl:if>
+                
             </xsl:when>
             </xsl:choose>
           </dd>
@@ -494,6 +551,7 @@
             <xsl:choose xml:space="preserve">
               <xsl:when test="//t:acquisition//t:p//text()">
                 <xsl:apply-templates select="//t:acquisition//t:p"/>
+                <xsl:if test="//t:acquisition//t:p/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
@@ -503,6 +561,7 @@
             <xsl:choose xml:space="preserve">
               <xsl:when test="//t:provenance[@type='transferred']//t:p//text()">
                 <xsl:apply-templates select="//t:provenance[@type='transferred']//t:p"/>
+                <xsl:if test="//t:provenance[@type='transferred']//t:p/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
@@ -511,14 +570,14 @@
           <dd>
             <xsl:choose>
               <xsl:when test="//t:provenance[@type='observed']//t:p//text() and //t:provenance[@type='not-observed']//t:p//text()">
-                <xsl:apply-templates select="//t:provenance[@type='observed']//t:p"/>
-                <xsl:apply-templates select="//t:provenance[@type='not-observed']//t:p"/>
+                <xsl:apply-templates select="//t:provenance[@type='observed']//t:p"/><xsl:if test="//t:provenance[@type='observed']//t:p/@cert='low'">?</xsl:if>
+                <xsl:apply-templates select="//t:provenance[@type='not-observed']//t:p"/><xsl:if test="//t:provenance[@type='not-observed']//t:p/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:provenance[@type='observed']//t:p//text()">
-                <xsl:apply-templates select="//t:provenance[@type='observed']//t:p"/>
+                <xsl:apply-templates select="//t:provenance[@type='observed']//t:p"/><xsl:if test="//t:provenance[@type='observed']//t:p/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:provenance[@type='not-observed']//t:p//text()">
-                <xsl:apply-templates select="//t:provenance[@type='not-observed']//t:p"/>
+                <xsl:apply-templates select="//t:provenance[@type='not-observed']//t:p"/><xsl:if test="//t:provenance[@type='not-observed']//t:p/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
@@ -593,7 +652,7 @@
           <dd>
             <xsl:choose xml:space="preserve">
                         <xsl:when test="//t:layoutDesc//t:layout[@n='r']/t:p/text()">
-                            <xsl:apply-templates select="//t:layoutDesc//t:layout[@n='r']/t:p/text()"/>
+                            <xsl:apply-templates select="//t:layoutDesc//t:layout[@n='r']/t:p/text()"/><xsl:if test="//t:layoutDesc//t:layout[@n='r']/t:p/@cert='low'">?</xsl:if>
                         </xsl:when>
                         <xsl:otherwise>―</xsl:otherwise>
                     </xsl:choose>
@@ -603,45 +662,45 @@
             <xsl:choose xml:space="preserve">
             <xsl:when test="//t:layout[@n='r']/t:dimensions/t:dim[@type='diameter']/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="diameter"/>
-              <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:dim[@type='diameter']"/>
+              <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:dim[@type='diameter']"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:dim[@type='diameter']/@cert='low'">?</xsl:if>
             </xsl:when>
               <xsl:when test="//t:layout[@n='r']/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:layout[@n='r']/t:dimensions/t:width/text()[not(normalize-space(.)=' ')] and //t:layout[@n='r']/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="height"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:height"/>,
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:height"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:height/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="width"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:width"/>,
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:width"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:width/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="thickness"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:depth"/><!-- not necessary for field's dimensions, but still... -->
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:depth"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:depth/@cert='low'">?</xsl:if><!-- not necessary for field's dimensions, but still... -->
             </xsl:when>
               <xsl:when test="//t:layout[@n='r']/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:layout[@n='r']/t:dimensions/t:width/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="height"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:height"/>,
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:height"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:height/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="width"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:width"/>
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:width"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:width/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='r']/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:layout[@n='r']/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="height"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:height"/>,
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:height"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:height/@cert='low'">?</xsl:if>,
                 <i18n:text i18n:key="thickness"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:depth"/>
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:depth"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:depth/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='r']/t:dimensions/t:width/text()[not(normalize-space(.)=' ')] and //t:layout[@n='r']/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="width"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:width"/>,
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:width"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:width/@cert='low'">?</xsl:if>,
                 <i18n:text i18n:key="thickness"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:depth"/>
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:depth"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:depth/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='r']/t:dimensions/t:height/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="height"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:height"/>
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:height"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:height/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='r']/t:dimensions/t:width/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="width"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:width"/>
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:width"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:width/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='r']/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="thickness"/>
-                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:depth"/>
+                <xsl:apply-templates select="//t:layout[@n='r']/t:dimensions/t:depth"/><xsl:if test="//t:layout[@n='r']/t:dimensions/t:depth/@cert='low'">?</xsl:if>
               </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -662,16 +721,16 @@
                   </xsl:when>
                 </xsl:choose>
               </xsl:when>
-              <xsl:when test="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']">
+              <xsl:when test="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']">
                 <xsl:choose xml:space="preserve">
-                  <xsl:when test="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc'] and //t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']">
-                    SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']//text()"/> - PBW ID: <xsl:apply-templates select="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']//text()"/>
+                  <xsl:when test="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc'] and //t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']">
+                    SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']//text()"/> - PBW ID: <xsl:apply-templates select="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']//text()"/>
                   </xsl:when>
-                  <xsl:when test="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']">
-                    SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']//text()"/>
+                  <xsl:when test="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']">
+                    SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']//text()"/>
                   </xsl:when>
-                  <xsl:when test="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']">
-                    PBW ID: <xsl:apply-templates select="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']//text()"/>
+                  <xsl:when test="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']">
+                    PBW ID: <xsl:apply-templates select="//t:layout[@n='r']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']//text()"/>
                   </xsl:when>
                 </xsl:choose>
               </xsl:when>
@@ -682,7 +741,7 @@
           <dd>
             <xsl:choose>
               <xsl:when test="//t:figure//t:figDesc[@n='r']//text()">
-                <xsl:apply-templates select="//t:figure//t:figDesc[@n='r']"/>
+                <xsl:apply-templates select="//t:figure//t:figDesc[@n='r']"/><xsl:if test="//t:figure//t:figDesc[@n='r']/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
@@ -691,7 +750,7 @@
           <dd>
             <xsl:choose>
               <xsl:when test="//t:figure//t:figDesc[@n='decoR']//text()">
-                <xsl:apply-templates select="//t:figure//t:figDesc[@n='decoR']"/>
+                <xsl:apply-templates select="//t:figure//t:figDesc[@n='decoR']"/><xsl:if test="//t:figure//t:figDesc[@n='decoR']/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
@@ -700,7 +759,7 @@
           <dd id="epigraphy">
             <xsl:choose> <!--cambiare @n='whole' in 'r' e 'v'-->
               <xsl:when test="//t:handDesc//t:handNote[@n='r']//t:seg//text()">
-                <xsl:apply-templates select="//t:handDesc//t:handNote[@n='r']//t:seg"/>
+                <xsl:apply-templates select="//t:handDesc//t:handNote[@n='r']//t:seg"/><xsl:if test="//t:handDesc//t:handNote[@n='r']//t:seg/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
@@ -717,7 +776,6 @@
         <dt width="150" align="left"><i18n:text i18n:key="languages"/></dt>
         <dd>
           <xsl:for-each select="//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='rev']">
-            
             <xsl:if test="@xml:lang">
               <xsl:variable name="lang" select="@xml:lang"/>
               <i18n:text i18n:key="{$lang}"/>
@@ -768,8 +826,7 @@
                 <xsl:otherwise>
                   <i18n:text i18n:key="undetermined"/>
                 </xsl:otherwise>
-              </xsl:choose>
-              -->
+              </xsl:choose> -->
             </xsl:if>
           </xsl:for-each>
         </dd>
@@ -777,7 +834,7 @@
         <dd>
           <xsl:choose xml:space="preserve">
                         <xsl:when test="//t:layoutDesc//t:layout[@n='v']/t:p/text()">
-                            <xsl:apply-templates select="//t:layoutDesc//t:layout[@n='v']/t:p/text()"/>
+                            <xsl:apply-templates select="//t:layoutDesc//t:layout[@n='v']/t:p/text()"/><xsl:if test="//t:layoutDesc//t:layout[@n='v']/t:p/@cert='low'">?</xsl:if>
                         </xsl:when>
                         <xsl:otherwise>―</xsl:otherwise>
                     </xsl:choose>
@@ -787,45 +844,45 @@
           <xsl:choose xml:space="preserve">
             <xsl:when test="//t:layout[@n='v']/t:dimensions/t:dim[@type='diameter']/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="diameter"/>
-              <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:dim[@type='diameter']"/>
+              <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:dim[@type='diameter']"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:dim[@type='diameter']/@cert='low'">?</xsl:if>
             </xsl:when>
               <xsl:when test="//t:layout[@n='v']/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:layout[@n='v']/t:dimensions/t:width/text()[not(normalize-space(.)=' ')] and //t:layout[@n='v']/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
               <i18n:text i18n:key="height"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:height"/>,
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:height"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:height[@type='diameter']/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="width"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:width"/>,
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:width"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:width[@type='diameter']/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="thickness"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:depth"/><!-- not necessary for field's dimensions, but still... -->
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:depth"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:depth[@type='diameter']/@cert='low'">?</xsl:if><!-- not necessary for field's dimensions, but still... -->
             </xsl:when>
               <xsl:when test="//t:layout[@n='v']/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:layout[@n='v']/t:dimensions/t:width/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="height"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:height"/>,
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:height"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:height[@type='diameter']/@cert='low'">?</xsl:if>,
               <i18n:text i18n:key="width"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:width"/>
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:width"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:width[@type='diameter']/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='v']/t:dimensions/t:height/text()[not(normalize-space(.)=' ')] and //t:layout[@n='v']/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="height"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:height"/>,
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:height"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:height[@type='diameter']/@cert='low'">?</xsl:if>,
                 <i18n:text i18n:key="thickness"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:depth"/>
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:depth"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:depth[@type='diameter']/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='v']/t:dimensions/t:width/text()[not(normalize-space(.)=' ')] and //t:layout[@n='v']/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="width"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:width"/>,
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:width"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:width[@type='diameter']/@cert='low'">?</xsl:if>,
                 <i18n:text i18n:key="thickness"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:depth"/>
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:depth"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:depth[@type='diameter']/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='v']/t:dimensions/t:height/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="height"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:height"/>
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:height"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:height[@type='diameter']/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='v']/t:dimensions/t:width/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="width"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:width"/>
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:width"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:width[@type='diameter']/@cert='low'">?</xsl:if>
               </xsl:when>
               <xsl:when test="//t:layout[@n='v']/t:dimensions/t:depth/text()[not(normalize-space(.)=' ')]">
                 <i18n:text i18n:key="thickness"/>
-                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:depth"/>
+                <xsl:apply-templates select="//t:layout[@n='v']/t:dimensions/t:depth"/><xsl:if test="//t:layout[@n='v']/t:dimensions/t:depth[@type='diameter']/@cert='low'">?</xsl:if>
               </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -846,16 +903,16 @@
                   </xsl:when>
                 </xsl:choose>
               </xsl:when>
-              <xsl:when test="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']">
+              <xsl:when test="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']">
                 <xsl:choose xml:space="preserve">
-                  <xsl:when test="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc'] and //t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']">
-                    SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']//text()"/> - PBW ID: <xsl:apply-templates select="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']//text()"/>
+                  <xsl:when test="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc'] and //t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']">
+                    SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']//text()"/> - PBW ID: <xsl:apply-templates select="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']//text()"/>
                   </xsl:when>
-                  <xsl:when test="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']">
-                    SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='SigiDoc']//text()"/>
+                  <xsl:when test="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']">
+                    SigiDoc ID: <xsl:apply-templates select="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='SigiDoc']//text()"/>
                   </xsl:when>
-                  <xsl:when test="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']">
-                    PBW ID: <xsl:apply-templates select="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='notSurviving']//t:idno[@type='PBW']//text()"/>
+                  <xsl:when test="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']">
+                    PBW ID: <xsl:apply-templates select="//t:layout[@n='v']//t:rs[@type='matrix'][@subtype='not-surviving']//t:idno[@type='PBW']//text()"/>
                   </xsl:when>
                 </xsl:choose>
               </xsl:when>
@@ -866,7 +923,7 @@
         <dd>
           <xsl:choose>
             <xsl:when test="//t:figure//t:figDesc[@n='v']//text()">
-              <xsl:apply-templates select="//t:figure//t:figDesc[@n='v']"/>
+              <xsl:apply-templates select="//t:figure//t:figDesc[@n='v']"/><xsl:if test="//t:figure//t:figDesc[@n='v']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -875,7 +932,7 @@
         <dd>
           <xsl:choose>
             <xsl:when test="//t:figure//t:figDesc[@n='decoV']//text()">
-              <xsl:apply-templates select="//t:figure//t:figDesc[@n='decoV']"/>
+              <xsl:apply-templates select="//t:figure//t:figDesc[@n='decoV']"/><xsl:if test="//t:figure//t:figDesc[@n='decoV']/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -884,7 +941,7 @@
         <dd id="epigraphy">
           <xsl:choose>
             <xsl:when test="//t:handDesc//t:handNote[@n='v']//t:seg//text()">
-              <xsl:apply-templates select="//t:handDesc//t:handNote[@n='v']//t:seg"/>
+              <xsl:apply-templates select="//t:handDesc//t:handNote[@n='v']//t:seg"/><xsl:if test="//t:handDesc//t:handNote[@n='v']//t:seg/@cert='low'">?</xsl:if>
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -897,23 +954,23 @@
       <div id="images"><!-- ************************* IMAGES ************************************ -->
         <h4 class="iospe"><i><i18n:text i18n:key="images"/></i></h4>
         <dl class="box">
-          <xsl:for-each select="//t:facsimile//t:surfaceGrp//t:surface[@n='r']//t:graphic">
+          <xsl:for-each select="//t:facsimile//t:surface[@type='r']//t:graphic">
             <dd>
-              <xsl:apply-templates select="." />
+              <xsl:apply-templates select="."/>
             </dd>
           </xsl:for-each>
           <dt width="150">
-            <xsl:value-of select="//t:facsimile//t:surfaceGrp//t:surface[@n='r']//t:graphic//t:desc"/>
+            <xsl:value-of select="//t:facsimile//t:surface[@type='r']//t:graphic//t:desc"/><xsl:if test="//t:facsimile//t:surface[@type='r']//t:graphic//t:desc/@cert='low'">?</xsl:if>
           </dt>
         </dl>
         <dl class="box">
-          <xsl:for-each select="//t:facsimile//t:surfaceGrp//t:surface[@n='v']//t:graphic">
+          <xsl:for-each select="//t:facsimile//t:surface[@type='v']//t:graphic">
             <dd>
-              <xsl:apply-templates select="." />
+              <xsl:apply-templates select="."/>
             </dd>
           </xsl:for-each>
           <dt width="150">
-            <xsl:value-of select="//t:facsimile//t:surfaceGrp//t:surface[@n='v']//t:graphic//t:desc"/>
+            <xsl:value-of select="//t:facsimile//t:surface[@type='v']//t:graphic//t:desc"/>
           </dt>
         </dl>
         
@@ -1101,7 +1158,7 @@
 
   <xsl:template name="sigidoc-structure">
     <xsl:variable name="title">
-      <xsl:call-template name="iospe-title" />
+      <xsl:call-template name="iospe-title"/>
     </xsl:variable>
     <html>
       <head>
@@ -1116,7 +1173,7 @@
         <h1>
           <xsl:value-of select="$title"/>
         </h1>
-        <xsl:call-template name="iospe-body-structure" />
+        <xsl:call-template name="iospe-body-structure"/>
       </body>
     </html>
   </xsl:template>
@@ -1125,9 +1182,9 @@
     <xsl:choose>
       <xsl:when test="//t:titleStmt/t:title/text() and matches(//t:idno[@type='filename'], '^\d\.\d{1,4}$')">
         <xsl:number value="substring-before(//t:idno[@type='filename'],'.')" format="I"/>
-        <xsl:text>&#xa0;</xsl:text>
+        <xsl:text> </xsl:text>
         <xsl:number value="substring-after(//t:idno[@type='filename'],'.')" format="1"/>
-        <xsl:text>.&#xa0;</xsl:text>
+        <xsl:text>. </xsl:text>
         <xsl:if test="string(normalize-space(//t:origPlace[1]))"><xsl:value-of select="normalize-space(//t:origPlace[1])"/>
         <xsl:text>.&#xa0;</xsl:text></xsl:if>
         <xsl:value-of select="//t:titleStmt/t:title[child::text()][1]"/>
