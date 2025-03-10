@@ -269,7 +269,8 @@
            <xsl:choose>
             <xsl:when test="//t:origin/t:origDate/@evidence">
               <xsl:for-each select="tokenize(//t:origin/t:origDate/@evidence,' ')">
-                <xsl:value-of select="translate(.,'-',' ')"/>
+                <i18n:text i18n:key="{.}"/>
+          
                 
                 <xsl:if test="position()!=last()">
                   <xsl:text>, </xsl:text>
@@ -326,21 +327,25 @@
               </xsl:for-each>
             </xsl:variable>
             <xsl:value-of select="concat($forename,' ' ,$surname)"/>
-            (<xsl:copy-of select="$idnos"/>)
+            <xsl:if test="$idnos != ''">(<xsl:copy-of select="$idnos"/>)</xsl:if>
             <br/>
-            <b>milieu: </b>
+            <b><i18n:text i18n:key="facet-milieu"></i18n:text>: </b>
             <xsl:variable name="tokenizedmillieu">
               <xsl:for-each select="tokenize(./@role, ' ')">
                 <token>
                   <xsl:value-of select="."/>
-                
                 </token>
               </xsl:for-each>
             </xsl:variable>
             <xsl:for-each select="$tokenizedmillieu//token">
               <i18n:text i18n:key="{.}"/><xsl:if test="not(fn:position() =last())">; </xsl:if>
             </xsl:for-each>
-            <br/><b>gender: </b><i18n:text i18n:key="{./@gender}"/><br/>
+            <br/><b><i18n:text i18n:key="facet-gender"/>: </b>
+            <xsl:choose>
+              <xsl:when test="./@gender != ''"><i18n:text i18n:key="{./@gender}"/><br/></xsl:when>
+              <xsl:otherwise>-</xsl:otherwise>
+            </xsl:choose>
+       
          </xsl:for-each>
 
         </dd>
@@ -514,16 +519,20 @@
           <dt width="150" align="left"><i18n:text i18n:key="collection-inventory"/></dt>
           <dd>
             <xsl:choose xml:space="preserve">
+              <!-- if msIdentifier/collection has a text-node as descendent and there msIdentifier/idno with text-node as descendent
+              write both in a row--> 
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text()">
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
+                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs"/>
                 <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
                 <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno/@cert='low'">?</xsl:if>
               </xsl:when>
+              <!-- if msIdentifier/collection has a text-node as descendent write it string no inv. no in a row--> 
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text()">
               <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
                 <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
               <xsl:text>no inv. no.</xsl:text>
             </xsl:when>
+              <!-- if there is only a msIdentifier/idno with a text-node write only this -->
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text()">
               <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/>
                 
@@ -532,14 +541,23 @@
             </xsl:when>
               <xsl:otherwise>―</xsl:otherwise>
             </xsl:choose>
+            
             <xsl:choose xml:space="preserve">
-              <xsl:when test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/text() and //t:sourceDesc//t:msDesc//t:altIdentifier//t:idno//text()">
-                 (<i>olim </i><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository"/> <xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/@cert='low'">?</xsl:if> 
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno/@cert='low'">?</xsl:if>)
+              <!-- When msIdentifiert/altIdentifier/repository has a text node as child and msIdentifiert/altIdentifier/idno as text-node as child, w
+              write (olim [repository] [idno] )-->
+              <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:altIdentifier/t:repository/text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:altIdentifier/t:idno//text()">
+                 (<i>olim </i><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:sourceDesc//t:msDesc//t:msIdentifier/t:altIdentifier/t:repository"/> <xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/@cert='low'">?</xsl:if> 
+                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:sourceDesc//t:msDesc//t:msIdentifier/t:altIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno/@cert='low'">?</xsl:if>)
               </xsl:when>
+              
+              <!-- When only msIdentifiert/altIdentifier/repository has a text node as child  w
+              write (olim [repository] )-->
               <xsl:when test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/text()">
                (<i>olim </i><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:repository/@cert='low'">?</xsl:if>)
             </xsl:when>
+              
+              <!-- When only msIdentifiert/altIdentifier/idno has a text node as child  w
+              write only [idno] -->
               <xsl:when test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno//text()">
               <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno/@cert='low'">?</xsl:if>
                 
