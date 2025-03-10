@@ -213,7 +213,7 @@
           <xsl:choose>
             <xsl:when test="//t:layout//t:rs[@type='execution']//t:seg//text()">
               <xsl:apply-templates select="//t:layout//t:rs[@type='execution']//t:seg"/>
-              <xsl:if test="//t:layout//t:rs[@type='execution']//t:seg/@cert='low'">?</xsl:if>
+            <!--  <xsl:if test="//t:layout//t:rs[@type='execution']//t:seg/@cert='low'">?</xsl:if> -->
             </xsl:when>
             <xsl:otherwise>―</xsl:otherwise>
           </xsl:choose>
@@ -522,13 +522,13 @@
               <!-- if msIdentifier/collection has a text-node as descendent and there msIdentifier/idno with text-node as descendent
               write both in a row--> 
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text()">
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs"/>
+                <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}"><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs"/></a>
                 <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
                 <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno/@cert='low'">?</xsl:if>
               </xsl:when>
               <!-- if msIdentifier/collection has a text-node as descendent write it string no inv. no in a row--> 
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text()">
-              <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
+              <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}"><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/></a>
                 <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
               <xsl:text>no inv. no.</xsl:text>
             </xsl:when>
@@ -559,7 +559,8 @@
               <!-- When only msIdentifiert/altIdentifier/idno has a text node as child  w
               write only [idno] -->
               <xsl:when test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno//text()">
-              <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno/@cert='low'">?</xsl:if>
+                (<i>olim </i>
+              <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:altIdentifier/t:idno/@cert='low'">?</xsl:if>)
                 
             </xsl:when>
             </xsl:choose>
@@ -972,23 +973,23 @@
       <div id="images"><!-- ************************* IMAGES ************************************ -->
         <h4 class="iospe"><i><i18n:text i18n:key="images"/></i></h4>
         <dl class="box">
-          <xsl:for-each select="//t:facsimile//t:surface[@type='r']//t:graphic">
+          <xsl:for-each select="//t:facsimile//t:surface[@n='r']//t:graphic">
             <dd>
               <xsl:apply-templates select="."/>
             </dd>
           </xsl:for-each>
           <dt width="150">
-            <xsl:value-of select="//t:facsimile//t:surface[@type='r']//t:graphic//t:desc"/><xsl:if test="//t:facsimile//t:surface[@type='r']//t:graphic//t:desc/@cert='low'">?</xsl:if>
+            <xsl:value-of select="//t:facsimile//t:surface[@n='r']//t:graphic//t:desc"/><xsl:if test="//t:facsimile//t:surface[@type='r']//t:graphic//t:desc/@cert='low'">?</xsl:if>
           </dt>
         </dl>
         <dl class="box">
-          <xsl:for-each select="//t:facsimile//t:surface[@type='v']//t:graphic">
+          <xsl:for-each select="//t:facsimile//t:surface[@n='v']//t:graphic">
             <dd>
               <xsl:apply-templates select="."/>
             </dd>
           </xsl:for-each>
           <dt width="150">
-            <xsl:value-of select="//t:facsimile//t:surface[@type='v']//t:graphic//t:desc"/>
+            <xsl:value-of select="//t:facsimile//t:surface[@n='v']//t:graphic//t:desc"/>
           </dt>
         </dl>
         
@@ -1142,7 +1143,7 @@
       </dl>
       </div>
       
-      <xsl:if test="//t:div[@type='commentary'][@subtype='text']//t:p">
+      <xsl:if test="//t:div[@type='commentary'][@subtype='text']//t:p/text()">
         <div id="commentary">
           <h4 class="iospe"><i><i18n:text i18n:key="commentary"/></i></h4>
           <!-- Commentary text output -->
@@ -1157,7 +1158,7 @@
       
       <!-- ************** FOOTNOTES ***************** -->
       <xsl:choose>
-        <xsl:when test="//t:div[@type='commentary'][@subtype='footnotes']//t:p">
+        <xsl:when test="//t:div[@type='commentary'][@subtype='footnotes']//t:p/text()">
           <div class="fnseparator"/>
           <div id="footnotes">
             <h4 class="iospe" id="notes">
@@ -1212,7 +1213,10 @@
         </xsl:if>
       </xsl:when>
       <xsl:when test="//t:titleStmt/t:title/text()">
-        <xsl:value-of select="//t:titleStmt/t:title"/>
+        <xsl:for-each select="//t:titleStmt/t:title/*">
+          <p><xsl:value-of select="."/></p>
+        </xsl:for-each>
+      <!--  <xsl:value-of select="//t:titleStmt/t:title"/> -->
       </xsl:when>
       <xsl:when test="//t:sourceDesc//t:bibl/text()">
         <xsl:value-of select="//t:sourceDesc//t:bibl"/>
