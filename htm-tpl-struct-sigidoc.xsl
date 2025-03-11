@@ -994,9 +994,10 @@
         </dl>
         
       </div>
-      <xsl:if test="//t:graphic[@type='RTI']">
+  <!--    <xsl:if test="//t:graphic[@type='RTI']"> -->
         <div class="rti">
           <h4 class="iospe">RTI</h4>
+          <!--
           <div class="rtitabs">
             <xsl:choose>
               <xsl:when test="//t:facsimile//t:surface[@type='r']//t:graphic[@type='RTI'] and //t:facsimile//t:surface[@type='v']//t:graphic[@type='RTI']">
@@ -1014,6 +1015,7 @@
               </xsl:otherwise>
             </xsl:choose>
           </div>
+          -->
           <div class="openLime"/>
           <script>
               const lime = new OpenLIME.Viewer('.openLime');
