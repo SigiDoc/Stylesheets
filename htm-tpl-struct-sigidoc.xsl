@@ -1137,7 +1137,7 @@
           </script>
           -->
         </div>
-      </xsl:if>
+   <!--   </xsl:if> -->
       
       <h4 class="iospe"><i18n:text i18n:key="edition"/></h4>
       <div class="section-container tabs" data-section="tabs">
