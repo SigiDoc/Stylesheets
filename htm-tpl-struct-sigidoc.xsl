@@ -1003,7 +1003,7 @@
                 <p id="rti_tab_1" class="rtitab active" data-url="{//t:facsimile//t:surface[@type='r']//t:graphic[@type='RTI']/@url}">
                   <i18n:text i18n:key="obverse"/>
                 </p>
-                <p id="rti_tab_2" class="rtitab" data-url="{//t:facsimile//t:surface[@type='']//t:graphic[@type='RTI']/@url}">
+                <p id="rti_tab_2" class="rtitab" data-url="{//t:facsimile//t:surface[@type='v']//t:graphic[@type='RTI']/@url}">
                   <i18n:text i18n:key="reverse"/>
                 </p>
               </xsl:when>
@@ -1014,10 +1014,87 @@
               </xsl:otherwise>
             </xsl:choose>
           </div>
-          <div class="relight">
-          </div>
-          
-          
+          <div class="openLime"/>
+          <script>
+              const lime = new OpenLIME.Viewer('.openLime');
+            
+              const layer0 = new OpenLIME.Layer({
+                label: 'test-image ptm',
+                layout: 'image',
+                type: 'rti',
+                url: '/assets/openlime/assets/rti/ptm/info.json',
+                normals: false
+              });
+              lime.addLayer('seal0',layer0);
+              
+              const layer1 = new OpenLIME.Layer({
+              label: 'test-image ptm',
+              layout: 'image',
+              type: 'rti',
+              url: '/assets/openlime/assets/rti/ptm/info.json',
+              normals: false
+              });
+              lime.addLayer('seal1',layer1);
+              
+              OpenLIME.Skin.setUrl('/assets/openlime/skin/skin.svg');
+              // Create an User Interface 
+              const ui = new OpenLIME.UIBasic(lime);
+              
+              // Add zoomin and zoomout to the toolbar
+              ui.actions.zoomin.display = true;
+              ui.actions.zoomout.display = true;
+              ui.actions.light.active = true;
+              
+              OpenLIME.HSH.minElevation = 0.2;
+              
+              class LightSpin {
+              constructor(layer, secondsPerTurn = 20, height = 0.7) {
+              this.layer = layer;
+              this.setHeight(height);
+              this.startTime = Date.now();
+              this.secondsPerTurn = secondsPerTurn;
+              this.spinning = true;
+              this.angle = 0.0;
+              this.startAngle = 0.0;
+              }
+              setHeight(height) {
+              this.w = Math.sqrt(1 + height*height);
+              }
+              update() {
+              let seconds = (Date.now() - this.startTime) / 1000;
+              
+              this.angle = 2*Math.PI*(seconds/this.secondsPerTurn) + this.startAngle;
+              
+              let x = Math.cos(this.angle)/this.w;
+              let y = Math.sin(this.angle)/this.w;
+              this.layer.setLight([x, y], 100);
+              if(this.spinning)
+              requestAnimationFrame(() => this.update());
+              }
+              start() {
+              this.startTime = Date.now();
+              this.spinning = true;
+              this.update();
+              }
+              stop() {
+              this.startTime = Date.now();
+              this.startAngle = this.angle;
+              this.spinning = false;
+              }
+              }
+              
+              
+              let spinner = new LightSpin(layer0, 20);
+              //spinner.start();
+              lime.pointerManager.idleTime = 60;
+              lime.pointerManager.onEvent( { 
+              priority: 0,
+              wentIdle: () => { spinner.start() }, 
+              activeAgain: () => { spinner.stop()}
+              });
+              
+          </script>
+          <!--
           <script> 
             $(document).ready(function(){
             
@@ -1056,6 +1133,7 @@
             
             
           </script>
+          -->
         </div>
       </xsl:if>
       
