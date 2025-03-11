@@ -1093,8 +1093,9 @@
         <div id="apparatus" class="iospe">
           <h4 class="iospe"><i18n:text i18n:key="apparatus"/></h4>
           <xsl:variable name="apptxt">
-            <xsl:apply-templates select="//t:div[@type='apparatus']/t:listApp"/>
+            <p><xsl:apply-templates select="//t:div[@type='apparatus']/t:listApp"/></p> 
           </xsl:variable>
+  
           <!-- Moded templates found in htm-tpl-sqbrackets.xsl -->
           <xsl:apply-templates select="$apptxt" mode="sqbrackets"/>
         </div>
@@ -1126,7 +1127,11 @@
         <dd id="biblioParallels">
           <xsl:choose>
             <xsl:when test="//t:body//t:div[@type='bibliography'][@subtype='parallels']/t:p/node()">
-              <xsl:apply-templates select="//t:body//t:div[@type='bibliography'][@subtype='parallels']/t:p/node()"/>
+              <xsl:for-each select="//t:body//t:div[@type='bibliography'][@subtype='parallels']/t:p">
+                <span>
+              <xsl:apply-templates select="./node()"/>
+                </span><br/>
+              </xsl:for-each>
             </xsl:when>
             <xsl:otherwise><i><i18n:text i18n:key="no-parallels-known"/></i></xsl:otherwise>
           </xsl:choose>
@@ -1213,8 +1218,13 @@
         </xsl:if>
       </xsl:when>
       <xsl:when test="//t:titleStmt/t:title/text()">
-        <xsl:for-each select="//t:titleStmt/t:title/*">
-          <p><xsl:value-of select="."/></p>
+        <xsl:for-each select="//t:titleStmt/t:title//text()">
+       <xsl:choose>
+            <xsl:when test="./parent::t:hi">
+              <i><xsl:value-of select="."/></i>
+            </xsl:when>
+            <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+          </xsl:choose>
         </xsl:for-each>
       <!--  <xsl:value-of select="//t:titleStmt/t:title"/> -->
       </xsl:when>
