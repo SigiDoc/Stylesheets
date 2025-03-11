@@ -1033,12 +1033,12 @@
               label: 'test-image ptm',
               layout: 'image',
               type: 'rti',
-              url: '/assets/openlime/assets/rti/ptm/info.json',
+              url: 'https://sigidoc.cceh.uni-koeln.de/rti/CM-1obv/info.json',
               normals: false
               });
               lime.addLayer('seal1',layer1);
               
-              OpenLIME.Skin.setUrl('https://sigidoc.cceh.uni-koeln.de/rti/CM-1obv/');
+              OpenLIME.Skin.setUrl('/assets/openlime/skin/skin.svg');
               // Create an User Interface 
               const ui = new OpenLIME.UIBasic(lime);
               
