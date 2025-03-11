@@ -1038,7 +1038,7 @@
               });
               lime.addLayer('seal1',layer1);
               
-              OpenLIME.Skin.setUrl('/assets/openlime/skin/skin.svg');
+              OpenLIME.Skin.setUrl('https://sigidoc.cceh.uni-koeln.de/rti/CM-1obv/');
               // Create an User Interface 
               const ui = new OpenLIME.UIBasic(lime);
               
