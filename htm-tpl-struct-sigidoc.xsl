@@ -310,7 +310,9 @@
         </dd>
           <dt width="150" align="left"><i18n:text i18n:key="issuer"/></dt>
         <dd>
-          
+          <!-- issuer is one or more persons -->
+          <xsl:choose>
+            <xsl:when test="//t:listPerson[@type='issuer']">
           <xsl:for-each select="//t:listPerson[@type='issuer']//t:person">
             <xsl:variable name="forename">
               <xsl:value-of select="./t:persName/t:forename"/>
@@ -347,7 +349,37 @@
             </xsl:choose>
        
          </xsl:for-each>
-
+            </xsl:when>
+            <xsl:when test="//t:listOrg[@type='issuer']">
+              
+              <xsl:for-each select="//t:listOrg[@type='issuer']//t:org">
+                <xsl:variable name="name">
+                  <xsl:value-of select="./t:orgName"/>
+                  <xsl:if test="./t:persName/t:forename/@cert='low'">?</xsl:if>
+                </xsl:variable>
+                <xsl:variable name="idnos">
+                  <xsl:for-each select="./t:idno">
+                    <xsl:value-of select="./@type"/>: <a href="{./@ana}"><xsl:value-of select="."/>
+                    </a><xsl:if test="not(position() = last())">; </xsl:if>
+                  </xsl:for-each>
+                </xsl:variable>
+                <xsl:value-of select="$name"/>
+                <xsl:if test="$idnos != ''">(<xsl:copy-of select="$idnos"/>)</xsl:if>
+                <br/>
+                <b><i18n:text i18n:key="facet-milieu"></i18n:text>: </b>
+                <xsl:variable name="tokenizedmillieu">
+                  <xsl:for-each select="tokenize(./@role, ' ')">
+                    <token>
+                      <xsl:value-of select="."/>
+                    </token>
+                  </xsl:for-each>
+                </xsl:variable>
+                <xsl:for-each select="$tokenizedmillieu//token">
+                  <i18n:text i18n:key="{.}"/><xsl:if test="not(fn:position() =last())">; </xsl:if>
+                </xsl:for-each>
+              </xsl:for-each>
+            </xsl:when>
+          </xsl:choose>
         </dd>
           <!--
           <dt width="150" align="left"><i18n:text i18n:key="issuer-milieu"/></dt>
