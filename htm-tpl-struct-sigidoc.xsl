@@ -315,7 +315,13 @@
             <xsl:when test="//t:listPerson[@type='issuer']">
           <xsl:for-each select="//t:listPerson[@type='issuer']//t:person">
             <xsl:variable name="forename">
-              <xsl:value-of select="./t:persName/t:forename"/>
+              <xsl:choose>
+                <xsl:when test="count(./t:persName/t:forename) > 1">
+                  <xsl:value-of select="string-join(./t:persName/t:forename, 'or')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="./t:persName/t:forename"/></xsl:otherwise>
+              </xsl:choose>
               <xsl:if test="./t:persName/t:forename/@cert='low'">?</xsl:if>
            </xsl:variable>
             <xsl:variable name="surname">           
