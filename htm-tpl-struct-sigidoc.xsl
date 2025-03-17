@@ -323,12 +323,12 @@
             <xsl:if test="./t:persName/t:surname/@cert='low'">?</xsl:if>
             </xsl:variable>
             <xsl:variable name="idnos">
-              <xsl:for-each select="./t:idno">
+              <xsl:for-each select="./t:idno[text() != '']">
                   <xsl:value-of select="./@type"/>: <a href="{./@ana}"><xsl:value-of select="."/>
                   </a><xsl:if test="not(position() = last())">; </xsl:if>
               </xsl:for-each>
             </xsl:variable>
-            <xsl:value-of select="concat($forename,' ' ,$surname)"/>
+            <xsl:value-of select="concat($forename,' ' ,$surname, ' ')"/>
             <xsl:if test="$idnos != ''">(<xsl:copy-of select="$idnos"/>)</xsl:if>
             <br/>
             <b><i18n:text i18n:key="facet-milieu"></i18n:text>: </b>
@@ -659,56 +659,6 @@
               <xsl:if test="@xml:lang">
                 <xsl:variable name="lang" select="@xml:lang"/>
                 <i18n:text i18n:key="{$lang}"/>
-                
-                <!--
-                <xsl:choose>
-                  <xsl:when test="$lang = 'grc'">
-                    <i18n:text i18n:key="grc"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'la'">
-                    <i18n:text i18n:key="la"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'la-Grek'">
-                    <i18n:text i18n:key="la-Grek"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-la'">
-                    <i18n:text i18n:key="grc-la"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-Latn'">
-                    <i18n:text i18n:key="grc-Latn"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-Arab'">
-                    <i18n:text i18n:key="grc-Arab"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-ara'">
-                    <i18n:text i18n:key="grc-ara"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'ara-Grek'">
-                    <i18n:text i18n:key="ara-Grek"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-hye'">
-                    <i18n:text i18n:key="grc-hye"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'hye-Grek'">
-                    <i18n:text i18n:key="hye-Grek"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-syr'">
-                    <i18n:text i18n:key="grc-syr"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'syr-Grek'">
-                    <i18n:text i18n:key="syr-Grek"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-kat'">
-                    <i18n:text i18n:key="grc-kat"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'kat-Grek'">
-                    <i18n:text i18n:key="kat-Grek"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <i18n:text i18n:key="undetermined"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-                -->
               </xsl:if>
             </xsl:for-each>
           </dd>
