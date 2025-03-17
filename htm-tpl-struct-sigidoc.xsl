@@ -310,18 +310,10 @@
         </dd>
           <dt width="150" align="left"><i18n:text i18n:key="issuer"/></dt>
         <dd>
-          <!-- issuer is one or more persons -->
-          <xsl:choose>
-            <xsl:when test="//t:listPerson[@type='issuer']">
+          
           <xsl:for-each select="//t:listPerson[@type='issuer']//t:person">
             <xsl:variable name="forename">
-              <xsl:choose>
-                <xsl:when test="count(./t:persName/t:forename) > 1">
-                  <xsl:value-of select="string-join(./t:persName/t:forename, 'or')"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="./t:persName/t:forename"/></xsl:otherwise>
-              </xsl:choose>
+              <xsl:value-of select="./t:persName/t:forename"/>
               <xsl:if test="./t:persName/t:forename/@cert='low'">?</xsl:if>
            </xsl:variable>
             <xsl:variable name="surname">           
@@ -329,12 +321,12 @@
             <xsl:if test="./t:persName/t:surname/@cert='low'">?</xsl:if>
             </xsl:variable>
             <xsl:variable name="idnos">
-              <xsl:for-each select="./t:idno[text() != '']">
+              <xsl:for-each select="./t:idno">
                   <xsl:value-of select="./@type"/>: <a href="{./@ana}"><xsl:value-of select="."/>
                   </a><xsl:if test="not(position() = last())">; </xsl:if>
               </xsl:for-each>
             </xsl:variable>
-            <xsl:value-of select="concat($forename,' ' ,$surname, ' ')"/>
+            <xsl:value-of select="concat($forename,' ' ,$surname)"/>
             <xsl:if test="$idnos != ''">(<xsl:copy-of select="$idnos"/>)</xsl:if>
             <br/>
             <b><i18n:text i18n:key="facet-milieu"></i18n:text>: </b>
@@ -355,37 +347,7 @@
             </xsl:choose>
        
          </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="//t:listOrg[@type='issuer']">
-              
-              <xsl:for-each select="//t:listOrg[@type='issuer']//t:org">
-                <xsl:variable name="name">
-                  <xsl:value-of select="./t:orgName"/>
-                  <xsl:if test="./t:persName/t:forename/@cert='low'">?</xsl:if>
-                </xsl:variable>
-                <xsl:variable name="idnos">
-                  <xsl:for-each select="./t:idno">
-                    <xsl:value-of select="./@type"/>: <a href="{./@ana}"><xsl:value-of select="."/>
-                    </a><xsl:if test="not(position() = last())">; </xsl:if>
-                  </xsl:for-each>
-                </xsl:variable>
-                <xsl:value-of select="$name"/>
-                <xsl:if test="$idnos != ''">(<xsl:copy-of select="$idnos"/>)</xsl:if>
-                <br/>
-                <b><i18n:text i18n:key="facet-milieu"></i18n:text>: </b>
-                <xsl:variable name="tokenizedmillieu">
-                  <xsl:for-each select="tokenize(./@role, ' ')">
-                    <token>
-                      <xsl:value-of select="."/>
-                    </token>
-                  </xsl:for-each>
-                </xsl:variable>
-                <xsl:for-each select="$tokenizedmillieu//token">
-                  <i18n:text i18n:key="{.}"/><xsl:if test="not(fn:position() =last())">; </xsl:if>
-                </xsl:for-each>
-              </xsl:for-each>
-            </xsl:when>
-          </xsl:choose>
+
         </dd>
           <!--
           <dt width="150" align="left"><i18n:text i18n:key="issuer-milieu"/></dt>
@@ -557,29 +519,16 @@
           <dt width="150" align="left"><i18n:text i18n:key="collection-inventory"/></dt>
           <dd>
             <xsl:choose xml:space="preserve">
-              <!-- if msIdentifier/collection has a text-node as descendent and msIdentifier/idno with text-node as descendent and msIdentifier/collection/rs has a ref-attribute
-              write both in a row with a link to the @ref--> 
-              <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//t:rs[@ref]">
+              <!-- if msIdentifier/collection has a text-node as descendent and there msIdentifier/idno with text-node as descendent
+              write both in a row--> 
+              <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text()">
                 <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}"><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs"/></a>
                 <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
                 <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno/@cert='low'">?</xsl:if>
               </xsl:when>
-                   <!-- if msIdentifier/collection has a text-node as descendent and msIdentifier/idno with text-node as descendent and msIdentifier/collection/rs has NOT a ref-attribute
-              write both in a row-->
-                <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//t:rs[not(@ref)]">
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs"/>
-                <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
-                <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno/@cert='low'">?</xsl:if>
-              </xsl:when>
-              <!-- if msIdentifier/collection has a text-node as descendent and and msIdentifier/collection/rs has a ref-attribute  write it string no inv. no in a row with a link to @ref--> 
-              <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//t:rs[@ref]">
+              <!-- if msIdentifier/collection has a text-node as descendent write it string no inv. no in a row--> 
+              <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text()">
               <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}"><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/></a>
-                <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
-              <xsl:text>no inv. no.</xsl:text>
-            </xsl:when>
-               <!-- if msIdentifier/collection has a text-node as descendent and and msIdentifier/collection/rs has NOT a ref-attribute  write it string no inv. no in a row with a link to @ref--> 
-              <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//t:rs[@ref]">
-              <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
                 <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
               <xsl:text>no inv. no.</xsl:text>
             </xsl:when>
@@ -665,6 +614,56 @@
               <xsl:if test="@xml:lang">
                 <xsl:variable name="lang" select="@xml:lang"/>
                 <i18n:text i18n:key="{$lang}"/>
+                
+                <!--
+                <xsl:choose>
+                  <xsl:when test="$lang = 'grc'">
+                    <i18n:text i18n:key="grc"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'la'">
+                    <i18n:text i18n:key="la"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'la-Grek'">
+                    <i18n:text i18n:key="la-Grek"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'grc-la'">
+                    <i18n:text i18n:key="grc-la"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'grc-Latn'">
+                    <i18n:text i18n:key="grc-Latn"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'grc-Arab'">
+                    <i18n:text i18n:key="grc-Arab"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'grc-ara'">
+                    <i18n:text i18n:key="grc-ara"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'ara-Grek'">
+                    <i18n:text i18n:key="ara-Grek"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'grc-hye'">
+                    <i18n:text i18n:key="grc-hye"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'hye-Grek'">
+                    <i18n:text i18n:key="hye-Grek"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'grc-syr'">
+                    <i18n:text i18n:key="grc-syr"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'syr-Grek'">
+                    <i18n:text i18n:key="syr-Grek"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'grc-kat'">
+                    <i18n:text i18n:key="grc-kat"/>
+                  </xsl:when>
+                  <xsl:when test="$lang = 'kat-Grek'">
+                    <i18n:text i18n:key="kat-Grek"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <i18n:text i18n:key="undetermined"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+                -->
               </xsl:if>
             </xsl:for-each>
           </dd>
@@ -996,6 +995,7 @@
         
       </div>
   <!--    <xsl:if test="//t:graphic[@type='RTI']"> -->
+    <div class="RTIedition">
         <div class="rti">
           <h4 class="iospe">RTI</h4>
           <!--
@@ -1139,7 +1139,7 @@
           -->
         </div>
    <!--   </xsl:if> -->
-      
+      <span id="editionSpan">
       <h4 class="iospe"><i18n:text i18n:key="edition"/></h4>
       <div class="section-container tabs" data-section="tabs">
         <section>
@@ -1169,7 +1169,8 @@
           </div>
         </section>
       </div>
-      
+      </span>
+      </div>
       <xsl:if test="//t:div[@type='apparatus']/t:listApp">
         <div id="apparatus" class="iospe">
           <h4 class="iospe"><i18n:text i18n:key="apparatus"/></h4>
