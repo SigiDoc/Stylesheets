@@ -1171,7 +1171,7 @@
       </div>
       </span>
       </div>
-      <xsl:if test="//t:div[@type='apparatus']/t:listApp">
+      <xsl:if test="normalize-space(//t:div[@type='apparatus']/t:listApp//t:app/text()) != ''">
         <div id="apparatus" class="iospe">
           <h4 class="iospe"><i18n:text i18n:key="apparatus"/></h4>
           <xsl:variable name="apptxt">
