@@ -65,7 +65,7 @@
             <xsl:text>-</xsl:text>
          </xsl:for-each>
       </xsl:variable>
-      <xsl:if test="@n"><!-- prints div number -->
+      <xsl:if test="@n and .//text()"><!-- prints div number -->
          <span class="textpartnumber" id="{$div-type}ab{$div-loc}{@n}">
             <!-- add ancestor textparts -->
             <xsl:if
