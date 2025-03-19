@@ -322,8 +322,10 @@
             </xsl:variable>
             <xsl:variable name="idnos">
               <xsl:for-each select="./t:idno">
+                <xsl:if test=". != ''">
                   <xsl:value-of select="./@type"/>: <a href="{./@ana}"><xsl:value-of select="."/>
                   </a><xsl:if test="not(position() = last())">; </xsl:if>
+                </xsl:if>
               </xsl:for-each>
             </xsl:variable>
             <xsl:value-of select="concat($forename,' ' ,$surname)"/>
