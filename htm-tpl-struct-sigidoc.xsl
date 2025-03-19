@@ -1183,7 +1183,7 @@
         </div>
       </xsl:if>
       
-      
+      <xsl:if test="normalize-space(string-join(//t:div[@type='translation']//t:p,'')) != ''">
       <div id="translation">
         <h4 class="iospe"><i18n:text i18n:key="legend-translation"/></h4>
         <xsl:variable name="transtxt">
@@ -1192,6 +1192,7 @@
         <!-- Moded templates found in htm-tpl-sqbrackets.xsl -->
         <xsl:apply-templates select="$transtxt" mode="sqbrackets"/>
       </div>
+      </xsl:if>
       
       <div id="bibliography">
         <h4 class="iospe"><i18n:text i18n:key="references"/></h4>
