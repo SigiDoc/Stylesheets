@@ -522,13 +522,34 @@
               <!-- if msIdentifier/collection has a text-node as descendent and there msIdentifier/idno with text-node as descendent
               write both in a row--> 
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text() and //t:sourceDesc//t:msDesc//t:msIdentifier/t:idno//text()">
-                <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}"><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs"/></a>
-                <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
+               <xsl:choose>
+                 <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref">
+                    <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}">
+                  <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs"/>
+                </a>
+                 </xsl:when>
+                 <xsl:otherwise>
+                   <span>
+                    <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs"/>
+                   </span>
+                 </xsl:otherwise>
+               </xsl:choose><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
                 <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno"/><xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:idno/@cert='low'">?</xsl:if>
               </xsl:when>
               <!-- if msIdentifier/collection has a text-node as descendent write it string no inv. no in a row--> 
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text()">
-              <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}"><xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/></a>
+              <xsl:choose>
+                <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}">
+                  <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}">
+                    <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <span>
+                    <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
+                  </span>
+                </xsl:otherwise>
+              </xsl:choose>
                 <xsl:if test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/@cert='low'">?</xsl:if>
               <xsl:text>no inv. no.</xsl:text>
             </xsl:when>
