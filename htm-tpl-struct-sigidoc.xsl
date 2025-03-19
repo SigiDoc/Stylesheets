@@ -539,7 +539,7 @@
               <!-- if msIdentifier/collection has a text-node as descendent write it string no inv. no in a row--> 
               <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection//text()">
               <xsl:choose>
-                <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}">
+                <xsl:when test="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref">
                   <a href="{//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection/t:rs/@ref}">
                     <xsl:apply-templates select="//t:sourceDesc//t:msDesc//t:msIdentifier/t:collection"/>
                   </a>
@@ -631,60 +631,13 @@
         <dl class="iospe"> 
           <dt width="150" align="left"><i18n:text i18n:key="languages"/></dt>
           <dd>
-            <xsl:for-each select="//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='obv']">
-              <xsl:if test="@xml:lang">
-                <xsl:variable name="lang" select="@xml:lang"/>
-                <i18n:text i18n:key="{$lang}"/>
-                
-                <!--
-                <xsl:choose>
-                  <xsl:when test="$lang = 'grc'">
-                    <i18n:text i18n:key="grc"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'la'">
-                    <i18n:text i18n:key="la"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'la-Grek'">
-                    <i18n:text i18n:key="la-Grek"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-la'">
-                    <i18n:text i18n:key="grc-la"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-Latn'">
-                    <i18n:text i18n:key="grc-Latn"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-Arab'">
-                    <i18n:text i18n:key="grc-Arab"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-ara'">
-                    <i18n:text i18n:key="grc-ara"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'ara-Grek'">
-                    <i18n:text i18n:key="ara-Grek"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-hye'">
-                    <i18n:text i18n:key="grc-hye"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'hye-Grek'">
-                    <i18n:text i18n:key="hye-Grek"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-syr'">
-                    <i18n:text i18n:key="grc-syr"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'syr-Grek'">
-                    <i18n:text i18n:key="syr-Grek"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'grc-kat'">
-                    <i18n:text i18n:key="grc-kat"/>
-                  </xsl:when>
-                  <xsl:when test="$lang = 'kat-Grek'">
-                    <i18n:text i18n:key="kat-Grek"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <i18n:text i18n:key="undetermined"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-                -->
+            <xsl:variable name="langcount" select="count(distinct-values(//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='obv']/@xml:lang))"/>
+          
+            <xsl:for-each select="distinct-values(//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='obv']/@xml:lang)">
+                <xsl:variable name="lang" select="."/>
+                  <i18n:text i18n:key="{$lang}"/>
+              <xsl:if test="fn:position() &lt; $langcount">
+                <xsl:text>; </xsl:text>
               </xsl:if>
             </xsl:for-each>
           </dd>
@@ -815,59 +768,19 @@
       <dl class="iospe"> 
         <dt width="150" align="left"><i18n:text i18n:key="languages"/></dt>
         <dd>
-          <xsl:for-each select="//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='rev']">
-            <xsl:if test="@xml:lang">
-              <xsl:variable name="lang" select="@xml:lang"/>
-              <i18n:text i18n:key="{$lang}"/>
-              <!--
-              <xsl:choose>
-                <xsl:when test="$lang = 'grc'">
-                  <i18n:text i18n:key="grc"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'la'">
-                  <i18n:text i18n:key="la"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'la-Grek'">
-                  <i18n:text i18n:key="la-Grek"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'grc-la'">
-                  <i18n:text i18n:key="grc-la"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'grc-Latn'">
-                  <i18n:text i18n:key="grc-Latn"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'grc-Arab'">
-                  <i18n:text i18n:key="grc-Arab"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'grc-ara'">
-                  <i18n:text i18n:key="grc-ara"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'ara-Grek'">
-                  <i18n:text i18n:key="ara-Grek"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'grc-hye'">
-                  <i18n:text i18n:key="grc-hye"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'hye-Grek'">
-                  <i18n:text i18n:key="hye-Grek"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'grc-syr'">
-                  <i18n:text i18n:key="grc-syr"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'syr-Grek'">
-                  <i18n:text i18n:key="syr-Grek"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'grc-kat'">
-                  <i18n:text i18n:key="grc-kat"/>
-                </xsl:when>
-                <xsl:when test="$lang = 'kat-Grek'">
-                  <i18n:text i18n:key="kat-Grek"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <i18n:text i18n:key="undetermined"/>
-                </xsl:otherwise>
-              </xsl:choose> -->
-            </xsl:if>
+          <xsl:variable name="langcount" select="count(distinct-values(//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='rev']/@xml:lang))"/>
+          <xsl:for-each select="distinct-values(//t:div[@type='edition' and @subtype='editorial']/t:div[@type='textpart' and @n='rev']/@xml:lang)">
+            <xsl:choose>
+              <xsl:when test=". != ''">
+                <xsl:variable name="lang" select="."/>
+                <i18n:text i18n:key="{$lang}"/>
+                
+                <xsl:if test="fn:position() &lt; $langcount">
+                  <xsl:text>; </xsl:text>
+                </xsl:if>
+              </xsl:when>
+              <xsl:otherwise>―</xsl:otherwise>
+            </xsl:choose>
           </xsl:for-each>
         </dd>
         <dt width="150" align="left"><i18n:text i18n:key="layout-field"/></dt>
