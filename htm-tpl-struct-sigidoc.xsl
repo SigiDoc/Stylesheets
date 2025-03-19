@@ -1014,30 +1014,10 @@
           </dt>
         </dl>
         
-      </div>
-  <!--    <xsl:if test="//t:graphic[@type='RTI']"> -->
+      </div> <xsl:if test="//t:graphic[@type='RTI']">
     <div class="RTIedition">
         <div class="rti">
           <h4 class="iospe">RTI</h4>
-          <!--
-          <div class="rtitabs">
-            <xsl:choose>
-              <xsl:when test="//t:facsimile//t:surface[@type='r']//t:graphic[@type='RTI'] and //t:facsimile//t:surface[@type='v']//t:graphic[@type='RTI']">
-                <p id="rti_tab_1" class="rtitab active" data-url="{//t:facsimile//t:surface[@type='r']//t:graphic[@type='RTI']/@url}">
-                  <i18n:text i18n:key="obverse"/>
-                </p>
-                <p id="rti_tab_2" class="rtitab" data-url="{//t:facsimile//t:surface[@type='v']//t:graphic[@type='RTI']/@url}">
-                  <i18n:text i18n:key="reverse"/>
-                </p>
-              </xsl:when>
-              <xsl:otherwise>
-                <p id="rti_tab_1" class="rtitab active" data-url="{//t:facsimile//t:surface//t:graphic[@type='RTI']/@url}">
-                  <xsl:value-of select="//t:facsimile//t:surface[.//t:graphic[@type='RTI']]/@type"/>
-                </p>
-              </xsl:otherwise>
-            </xsl:choose>
-          </div>
-          -->
           <div class="openLime"/>
           <script>
               const lime = new OpenLIME.Viewer('.openLime');
@@ -1159,7 +1139,8 @@
           </script>
           -->
         </div>
-   <!--   </xsl:if> -->
+    </div>  
+      </xsl:if>
       <span id="editionSpan">
       <h4 class="iospe"><i18n:text i18n:key="edition"/></h4>
       <div class="section-container tabs" data-section="tabs">
@@ -1280,8 +1261,6 @@
           <xsl:text/>
         </xsl:otherwise>
       </xsl:choose>
-      
-    </div>
   </xsl:template>
 
   <xsl:template name="sigidoc-structure">
