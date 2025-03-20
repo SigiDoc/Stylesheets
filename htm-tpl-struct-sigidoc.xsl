@@ -1114,7 +1114,7 @@
       <div id="bibliography">
         <h4 class="iospe"><i18n:text i18n:key="references"/></h4>
       <dl class="iospe">  
-        <dt width="150" align="left"><i><i18n:text i18n:key="editions"/></i></dt>
+        <dt width="150" align="left"><i18n:text i18n:key="editions"/></dt>
         <dd id="biblioEditions">
           <xsl:choose>
             <xsl:when test="//t:body//t:div[@type='bibliography'][@subtype='edition']/t:p/node()">
@@ -1123,7 +1123,7 @@
             <xsl:otherwise><i><i18n:text i18n:key="unpublished"/></i></xsl:otherwise>
           </xsl:choose>
         </dd>
-        <dt width="150" align="left"><i><i18n:text i18n:key="parallels"/></i></dt>
+        <dt width="150" align="left"><i18n:text i18n:key="parallels"/></dt>
         <dd id="biblioParallels">
           <xsl:choose>
             <xsl:when test="//t:body//t:div[@type='bibliography'][@subtype='parallels']/t:p/node()">
@@ -1136,7 +1136,7 @@
             <xsl:otherwise><i><i18n:text i18n:key="no-parallels-known"/></i></xsl:otherwise>
           </xsl:choose>
         </dd>
-        <dt width="150" align="left"><i><i18n:text i18n:key="further-references"/></i></dt>
+        <dt width="150" align="left"><i18n:text i18n:key="further-references"/></dt>
         <dd id="biblioCommParallels">
           <xsl:choose> <!--da cambiare i subtype-->
             <xsl:when test="//t:body//t:div[@type='bibliography'][@subtype='discussion']/t:p/node()">
