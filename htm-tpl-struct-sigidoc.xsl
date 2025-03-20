@@ -904,8 +904,6 @@
       </dl>
     </div>
     <dl class="iospe"><!-- don't touch this! --></dl>
-    <xsl:if test="//t:graphic[@url]">
-    <div id="text">
       <xsl:if test="//t:graphic[@type='photo']">
       <div id="images"><!-- ************************* IMAGES ************************************ -->
         <h4 class="iospe"><i><i18n:text i18n:key="images"/></i></h4>
@@ -931,8 +929,9 @@
         </dl>
       </div> 
       </xsl:if>
-      <xsl:if test="//t:graphic[@type='RTI']">
+     
     <div class="RTIedition">
+      <xsl:if test="//t:graphic[@type='RTI']">
         <div class="rti">
           <h4 class="iospe">RTI</h4>
           <a class="rti-switch" data-url="{//t:facsimile//t:surface[@n='v']//t:graphic[@type='RTI'][1]/@url}">obverse</a>
@@ -1034,10 +1033,7 @@
               }
           </script>
         </div>
-    </div>  
       </xsl:if>
-    </div>
-    </xsl:if>
       <span id="editionSpan">
       <h4 class="iospe"><i18n:text i18n:key="edition"/></h4>
       <div class="section-container tabs" data-section="tabs">
@@ -1070,6 +1066,7 @@
       </div>
       </span>
       
+    </div>
       <xsl:if test="normalize-space(string-join(//t:div[@type='apparatus']/t:listApp//t:app,'')) != ''">
         <div id="apparatus" class="iospe">
           <h4 class="iospe"><i18n:text i18n:key="apparatus"/></h4>
