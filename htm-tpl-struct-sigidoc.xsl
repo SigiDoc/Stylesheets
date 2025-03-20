@@ -19,7 +19,6 @@
           </xsl:when>
           <xsl:otherwise>―</xsl:otherwise>
         </xsl:choose>
-        <xsl:if test="//t:publicationStmt//t:idno[@type='SigiDocID']/@cert='low'">?</xsl:if>
       </h6>
     
     
@@ -905,7 +904,9 @@
       </dl>
     </div>
     <dl class="iospe"><!-- don't touch this! --></dl>
+    <xsl:if test="//t:graphic[@url]">
     <div id="text">
+      <xsl:if test="//t:graphic[@type='photo']">
       <div id="images"><!-- ************************* IMAGES ************************************ -->
         <h4 class="iospe"><i><i18n:text i18n:key="images"/></i></h4>
         <dl class="box">
@@ -928,32 +929,50 @@
             <xsl:value-of select="//t:facsimile//t:surface[@n='v']//t:graphic//t:desc"/>
           </dt>
         </dl>
-        
-      </div> <xsl:if test="//t:graphic[@type='RTI']">
+      </div> 
+      </xsl:if>
+      <xsl:if test="//t:graphic[@type='RTI']">
     <div class="RTIedition">
         <div class="rti">
           <h4 class="iospe">RTI</h4>
-          <div class="openLime"/>
-          <script>
+          <a class="rti-switch" data-url="{//t:facsimile//t:surface[@n='v']//t:graphic[@type='RTI'][1]/@url}">obverse</a>
+          <a class="rti-switch hidden" data-url="{//t:facsimile//t:surface[@n='r']//t:graphic[@type='RTI'][1]/@url}">reverse</a>
+            <script>
+            $(document).ready(function() {
+            
+            const url = $('.rti-switch').not('.hidden').data('url')
+            createRTIViewer(url);
+            
+            $('.rti-switch').on("click", function(){
+              const url = $('.rti-switch').not('.hidden').data('url')
+              $(".rti-switch").toggleClass("hidden");
+              createRTIViewer(url);
+              
+            });
+            
+            });
+            
+            
+            
+            function createRTIViewer(url){
+            $('.openLime').remove();
+            $('.rti').append($('<div></div>').addClass('openLime'));            
+              createOpenLime(url);
+            };
+            
+            function createOpenLime(url){
               const lime = new OpenLIME.Viewer('.openLime');
+              
             
               const layer0 = new OpenLIME.Layer({
                 label: 'test-image ptm',
                 layout: 'image',
                 type: 'rti',
-                url: '/assets/openlime/assets/rti/ptm/info.json',
+                url: url,
                 normals: false
               });
               lime.addLayer('seal0',layer0);
               
-              const layer1 = new OpenLIME.Layer({
-              label: 'test-image ptm',
-              layout: 'image',
-              type: 'rti',
-              url: 'https://sigidoc.cceh.uni-koeln.de/rti/CM-1obv/info.json',
-              normals: false
-              });
-              lime.addLayer('seal1',layer1);
               
               OpenLIME.Skin.setUrl('/assets/openlime/skin/skin.svg');
               // Create an User Interface 
@@ -1012,50 +1031,13 @@
               activeAgain: () => { spinner.stop()}
               });
               
+              }
           </script>
-          <!--
-          <script> 
-            $(document).ready(function(){
-            
-            var url = $(".rtitab.active").attr('data-url');
-            var Relight = new RelightViewer('.relight', { url: url});
-            // newRelight(url);
-            
-            $(".rtitab").on("click",function(){
-            if($(this).hasClass("active")){}
-            else{
-            $(".rtitab.active").toggleClass("active");
-            $(this).toggleClass("active")
-            $(".relight").empty()
-            url = $(this).attr('data-url')
-            var Relight = new RelightViewer('.relight', { url: url});
-            
-            }
-            
-            });
-            
-            $(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
-            var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-            var event = state ? 'FullscreenOn' : 'FullscreenOff';
-            if(event == "FullscreenOff"){
-            newRelight()
-            }
-            });
-            
-            }); function newRelight(){
-            console.log("new Relight");
-            var url = $(".rtitab.active").attr('data-url');
-            $(".relight").empty()
-            var Relight = new RelightViewer('.relight', { url: url});
-            
-            };
-            
-            
-          </script>
-          -->
         </div>
     </div>  
       </xsl:if>
+    </div>
+    </xsl:if>
       <span id="editionSpan">
       <h4 class="iospe"><i18n:text i18n:key="edition"/></h4>
       <div class="section-container tabs" data-section="tabs">
@@ -1087,7 +1069,7 @@
         </section>
       </div>
       </span>
-      </div>
+      
       <xsl:if test="normalize-space(string-join(//t:div[@type='apparatus']/t:listApp//t:app,'')) != ''">
         <div id="apparatus" class="iospe">
           <h4 class="iospe"><i18n:text i18n:key="apparatus"/></h4>
