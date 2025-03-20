@@ -18,7 +18,7 @@
   </xsl:template>
 
   <!-- Display a local image with thumbnail. -->
-  <xsl:template match="t:graphic">
+  <xsl:template match="t:graphic[not(@type='RTI')]">
     <xsl:param name="parm-image-loc" select="''" tunnel="yes"/>
     <!-- Create a link to the full image and display a thumbnail
          image.
@@ -34,15 +34,17 @@
         <xsl:attribute name="src">
           <xsl:value-of select="$parm-image-loc"/>
           <xsl:value-of select="string-join(subsequence($url-parts, 1, $count-url-parts), '.')"/>
-          <xsl:text>-thumb.</xsl:text>
+         <!-- <xsl:text>-thumb.</xsl:text> -->
+          <xsl:text>.</xsl:text>
           <xsl:value-of select="subsequence($url-parts, $count-url-parts)[last()]"/>
         </xsl:attribute>
       </img>
     </a>
   </xsl:template>
 
+
   <!-- Display an image. -->
-  <xsl:template match="t:graphic[contains(@url, '://')]">
+  <xsl:template match="t:graphic[not(@type='RTI')][contains(@url, '://')]">
     <img src="{@url}" title="{t:desc}"/>
   </xsl:template>
 
