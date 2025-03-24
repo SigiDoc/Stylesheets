@@ -908,34 +908,34 @@
       <div id="images"><!-- ************************* IMAGES ************************************ -->
         <h4 class="iospe"><i><i18n:text i18n:key="images"/></i></h4>
         <dl class="box">
-          <xsl:for-each select="//t:facsimile//t:surface[@n='r']//t:graphic">
+          <xsl:for-each select="//t:facsimile//t:surface[@n='r']//t:graphic[@type='photo']">
             <dd>
               <xsl:apply-templates select="."/>
             </dd>
           </xsl:for-each>
           <dt width="150">
-            <xsl:value-of select="//t:facsimile//t:surface[@n='r']//t:graphic//t:desc"/><xsl:if test="//t:facsimile//t:surface[@type='r']//t:graphic//t:desc/@cert='low'">?</xsl:if>
+            <xsl:value-of select="//t:facsimile//t:surface[@n='r']//t:graphic[@type='photo']//t:desc"/><xsl:if test="//t:facsimile//t:surface[@type='r']//t:graphic//t:desc/@cert='low'">?</xsl:if>
           </dt>
         </dl>
         <dl class="box">
-          <xsl:for-each select="//t:facsimile//t:surface[@n='v']//t:graphic">
+          <xsl:for-each select="//t:facsimile//t:surface[@n='v']//t:graphic[@type='photo']">
             <dd>
               <xsl:apply-templates select="."/>
             </dd>
           </xsl:for-each>
           <dt width="150">
-            <xsl:value-of select="//t:facsimile//t:surface[@n='v']//t:graphic//t:desc"/>
+            <xsl:value-of select="//t:facsimile//t:surface[@n='v']//t:graphic[@type='photo']//t:desc"/>
           </dt>
         </dl>
       </div> 
       </xsl:if>
      
     <div class="RTIedition">
-      <xsl:if test="//t:graphic[@type='RTI']">
+      <xsl:if test="//t:graphic[upper-case(@type)='RTI']">
         <div class="rti">
           <h4 class="iospe">RTI</h4>
-          <a class="rti-switch" data-url="{//t:facsimile//t:surface[@n='v']//t:graphic[@type='RTI'][1]/@url}">obverse</a>
-          <a class="rti-switch hidden" data-url="{//t:facsimile//t:surface[@n='r']//t:graphic[@type='RTI'][1]/@url}">reverse</a>
+          <a class="rti-switch" data-url="{//t:facsimile//t:surface[@n='v']//t:graphic[upper-case(@type)='RTI'][1]/@url}">obverse</a>
+          <a class="rti-switch hidden" data-url="{//t:facsimile//t:surface[@n='r']//t:graphic[upper-case(@type)='RTI'][1]/@url}">reverse</a>
             <script>
             $(document).ready(function() {
             
