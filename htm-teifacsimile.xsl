@@ -18,7 +18,7 @@
   </xsl:template>
 
   <!-- Display a local image with thumbnail. -->
-  <xsl:template match="t:graphic[not(@type='RTI')]">
+  <xsl:template match="t:graphic[not(upper-case(@type)='RTI')][not(contains(@url,'://'))]">
     <xsl:param name="parm-image-loc" select="''" tunnel="yes"/>
     <!-- Create a link to the full image and display a thumbnail
          image.
@@ -42,10 +42,12 @@
     </a>
   </xsl:template>
 
-
   <!-- Display an image. -->
-  <xsl:template match="t:graphic[not(@type='RTI')][contains(@url, '://')]">
+  <xsl:template match="t:graphic[not(upper-case(@type)='RTI')][contains(@url, '://')]">
+    <a href="{@url}">
     <img src="{@url}" title="{t:desc}"/>
+    </a>
   </xsl:template>
+  
 
 </xsl:stylesheet>
