@@ -932,10 +932,9 @@
      
     <div class="RTIedition">
       <xsl:if test="//t:graphic[@type='RTI']">
+      <span>
         <div class="rti">
           <h4 class="iospe">RTI</h4>
-          <a class="rti-switch" data-url="{//t:facsimile//t:surface[@n='v']//t:graphic[@type='RTI'][1]/@url}">obverse</a>
-          <a class="rti-switch hidden" data-url="{//t:facsimile//t:surface[@n='r']//t:graphic[@type='RTI'][1]/@url}">reverse</a>
             <script>
             $(document).ready(function() {
             
@@ -1032,7 +1031,11 @@
               
               }
           </script>
+          
         </div>
+        <a class="rti-switch" data-url="{//t:facsimile//t:surface[@n='v']//t:graphic[@type='RTI'][1]/@url}">obverse</a>
+        <a class="rti-switch hidden" data-url="{//t:facsimile//t:surface[@n='r']//t:graphic[@type='RTI'][1]/@url}">reverse</a>
+        </span>
       </xsl:if>
       <span id="editionSpan">
       <h4 class="iospe"><i18n:text i18n:key="edition"/></h4>
