@@ -932,6 +932,7 @@
      
     <div class="RTIedition">
       <xsl:if test="//t:graphic[upper-case(@type)='RTI']">
+        <span>
         <div class="rti">
           <h4 class="iospe">RTI</h4>
             <script>
