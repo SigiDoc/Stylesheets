@@ -29,7 +29,7 @@
          suffix but does have a "." in it. -->
     <xsl:variable name="url-parts" select="tokenize(@url, '\.')"/>
     <xsl:variable name="count-url-parts" select="count($url-parts) - 1"/>
-    <a href="{concat($parm-image-loc, @url)}">
+    <a target="_blank" href="{concat($parm-image-loc, @url)}">
       <img title="{t:desc}">
         <xsl:attribute name="src">
           <xsl:value-of select="$parm-image-loc"/>
@@ -44,7 +44,7 @@
 
   <!-- Display an image. -->
   <xsl:template match="t:graphic[not(upper-case(@type)='RTI')][contains(@url, '://')]">
-    <a href="{@url}">
+    <a target="_blank" href="{@url}">
     <img src="{@url}" title="{t:desc}"/>
     </a>
   </xsl:template>
