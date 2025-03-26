@@ -1033,8 +1033,8 @@
           </script>
           
         </div>
-        <a class="rti-switch" data-url="{//t:facsimile//t:surface[@n='v']//t:graphic[upper-case(@type)='RTI'][1]/@url}">obverse</a>
-        <a class="rti-switch hidden" data-url="{//t:facsimile//t:surface[@n='r']//t:graphic[upper-case(@type)='RTI'][1]/@url}">reverse</a>
+        <a class="rti-switch" data-url="{//t:facsimile//t:surface[@n='v']//t:graphic[upper-case(@type)='RTI'][1]/@url}">show obverse</a>
+        <a class="rti-switch hidden" data-url="{//t:facsimile//t:surface[@n='r']//t:graphic[upper-case(@type)='RTI'][1]/@url}">show reverse</a>
         </span>
       </xsl:if>
       <span id="editionSpan">
