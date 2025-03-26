@@ -942,8 +942,8 @@
             createRTIViewer(url);
             
             $('.rti-switch').on("click", function(){
-              const url = $('.rti-switch').not('.hidden').data('url')
               $(".rti-switch").toggleClass("hidden");
+              const url = $('.rti-switch').not('.hidden').data('url')
               createRTIViewer(url);
               
             });
