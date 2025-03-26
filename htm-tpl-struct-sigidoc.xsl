@@ -1067,9 +1067,6 @@
           </div>
         </section>
       </div>
-      </span>
-      
-    </div>
       <xsl:if test="normalize-space(string-join(//t:div[@type='apparatus']/t:listApp//t:app,'')) != ''">
         <div id="apparatus" class="iospe">
           <h4 class="iospe"><i18n:text i18n:key="apparatus"/></h4>
@@ -1081,6 +1078,10 @@
           <xsl:apply-templates select="$apptxt" mode="sqbrackets"/>
         </div>
       </xsl:if>
+      </span>
+      
+    </div>
+      
       
       <xsl:if test="normalize-space(string-join(//t:div[@type='translation']//t:p,'')) != ''">
       <div id="translation">
