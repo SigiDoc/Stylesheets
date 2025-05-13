@@ -76,6 +76,7 @@
 
    <xsl:template match="t:cb">
       <xsl:param name="parm-leiden-style" tunnel="yes" required="no"/>
+      <sup><xsl:value-of select="@n"/></sup>
       <xsl:if test="$parm-leiden-style='iospe'">
          <xsl:element name="span">
             <xsl:attribute name="class" select="'textpartnumber'"/>
